@@ -1,6 +1,6 @@
-const Tutorial = require("../models/tutorial.model.js");
+const Airtable = require("../models/tutorial.model.js");
 
-// Create and Save a new Tutorial
+// Create and Save a new Airtable
 exports.create = (req, res) => {
   // Validate request
   if (!req.body) {
@@ -9,8 +9,8 @@ exports.create = (req, res) => {
     });
   }
 
-  // Create a Tutorial
-  const tutorial = new Tutorial({
+  // Create a Airtable
+  const airtable = new Airtable({
     title: req.body.title,
     description: req.body.description,
     published: req.body.published || false,
@@ -20,26 +20,26 @@ exports.create = (req, res) => {
     rowlength: req.body.rowlength || false,
   });
 
-  // Save Tutorial in the database
-  Tutorial.create(tutorial, (err, data) => {
+  // Save Airtable in the database
+  Airtable.create(airtable, (err, data) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while creating the Tutorial.",
+          err.message || "Some error occurred while creating the Airtable.",
       });
     else res.send(data);
   });
 };
 
-// Retrieve all Tutorials from the database (with condition).
+// Retrieve all Airtable from the database (with condition).
 exports.findAll = (req, res) => {
   const title = req.query.title;
 
-  Tutorial.getAll(title, (err, data) => {
+  Airtable.getAll(title, (err, data) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving tutorials.",
+          err.message || "Some error occurred while retrieving airtable.",
       });
     else res.send(data);
   });
@@ -49,46 +49,46 @@ exports.findAll = (req, res) => {
 exports.findColumns = (req, res) => {
   const title = req.query.title;
 
-  Tutorial.getColAll(title, (err, data) => {
+  Airtable.getColAll(title, (err, data) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving tutorials.",
+          err.message || "Some error occurred while retrieving airtable.",
       });
     else res.send(data);
   });
 };
 
-// Find a single Tutorial by Id
+// Find a single Airtable by Id
 exports.findOne = (req, res) => {
-  Tutorial.findById(req.params.id, (err, data) => {
+  Airtable.findById(req.params.id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found Tutorial with id ${req.params.id}.`,
+          message: `Not found Airtable with id ${req.params.id}.`,
         });
       } else {
         res.status(500).send({
-          message: "Error retrieving Tutorial with id " + req.params.id,
+          message: "Error retrieving Airtable with id " + req.params.id,
         });
       }
     } else res.send(data);
   });
 };
 
-// find all published Tutorials
+// find all published Airtable
 exports.findAllPublished = (req, res) => {
-  Tutorial.getAllPublished((err, data) => {
+  Airtable.getAllPublished((err, data) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving tutorials.",
+          err.message || "Some error occurred while retrieving airtable.",
       });
     else res.send(data);
   });
 };
 
-// Update a Tutorial identified by the id in the request
+// Update a Airtable identified by the id in the request
 exports.update = (req, res) => {
   // Validate Request
   if (!req.body) {
@@ -97,22 +97,22 @@ exports.update = (req, res) => {
     });
   }
 
-  Tutorial.updateById(req.params.id, new Tutorial(req.body), (err, data) => {
+  Airtable.updateById(req.params.id, new Airtable(req.body), (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found Tutorial with id ${req.params.id}.`,
+          message: `Not found Airtable with id ${req.params.id}.`,
         });
       } else {
         res.status(500).send({
-          message: "Error updating Tutorial with id " + req.params.id,
+          message: "Error updating Airtable with id " + req.params.id,
         });
       }
     } else res.send(data);
   });
 };
 
-// Update a Tutorial identified by the id in the request
+// Update a Airtable identified by the id in the request
 exports.insertColumn = (req, res) => {
   // Validate Request
   if (!req.body) {
@@ -124,15 +124,15 @@ exports.insertColumn = (req, res) => {
   let data = req.body.data;
   let callStatus;
 
-  Tutorial.increaseId(req.params.id, data.col_order, (err, data1) => {
+  Airtable.increaseId(req.params.id, data.col_order, (err, data1) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found Tutorial with id ${req.params.id}.`,
+          message: `Not found Airtable with id ${req.params.id}.`,
         });
       } else {
         res.status(500).send({
-          message: "Error updating Tutorial with id " + req.params.id,
+          message: "Error updating Airtable with id " + req.params.id,
         });
       }
     } else {
@@ -141,13 +141,13 @@ exports.insertColumn = (req, res) => {
 
       let insert_col_id;
 
-      Tutorial.insertNewItem(content, (err, res) => {
-        insert_col_id = res.id;
+      Airtable.insertNewItem(content, (err, data2) => {
+        insert_col_id = data2.id;
 
         if (err)
           res.status(500).send({
             message:
-              err.message || "Some error occurred while creating the Tutorial.",
+              err.message || "Some error occurred while creating the Airtable.",
           });
 
         let datas = "";
@@ -157,25 +157,19 @@ exports.insertColumn = (req, res) => {
             datas += ",";
           }
         }
-        // Save Tutorial in the database
-
-        Tutorial.createdatas(datas, (err, data) => {
+        
+        Airtable.createdatas(datas, (err, data) => {
           if (err) {
 
           }
-            // res.status(500).send({
-            //   message:
-            //     err.messageinser ||
-            //     "Some error occurred while creating the Tutorial.",
-            // });
-          console.log("last1 => ", data);
           if (data) {
             callStatus = true;
+            res.status(200).send({ message: "success" });
           }
         });
       });
 
-      res.status(200).send({ message: "success" });
+      
     }
   });
 };
@@ -183,41 +177,41 @@ exports.insertColumn = (req, res) => {
 exports.findRowLen = (req, res) => {
   const title = req.query.title;
 
-  Tutorial.rowLength(title, (err, data) => {
+  Airtable.rowLength(title, (err, data) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while retrieving tutorials.",
+          err.message || "Some error occurred while retrieving airtable.",
       });
     else res.send(data);
   });
 };
 
-// Delete a Tutorial with the specified id in the request
+// Delete a Airtable with the specified id in the request
 exports.delete = (req, res) => {
-  Tutorial.remove(req.params.id, (err, data) => {
+  Airtable.remove(req.params.id, (err, data) => {
     if (err) {
       if (err.kind === "not_found") {
         res.status(404).send({
-          message: `Not found Tutorial with id ${req.params.id}.`,
+          message: `Not found Airtable with id ${req.params.id}.`,
         });
       } else {
         res.status(500).send({
-          message: "Could not delete Tutorial with id " + req.params.id,
+          message: "Could not delete Airtable with id " + req.params.id,
         });
       }
-    } else res.send({ message: `Tutorial was deleted successfully!` });
+    } else res.send({ message: `Airtable was deleted successfully!` });
   });
 };
 
-// Delete all Tutorials from the database.
+// Delete all Airtable from the database.
 exports.deleteAll = (req, res) => {
-  Tutorial.removeAll((err, data) => {
+  Airtable.removeAll((err, data) => {
     if (err)
       res.status(500).send({
         message:
-          err.message || "Some error occurred while removing all tutorials.",
+          err.message || "Some error occurred while removing all Airtable.",
       });
-    else res.send({ message: `All Tutorials were deleted successfully!` });
+    else res.send({ message: `All Airtable were deleted successfully!` });
   });
 };

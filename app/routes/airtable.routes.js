@@ -1,34 +1,34 @@
 module.exports = (app) => {
-  const tutorials = require("../controllers/tutorial.controller.js");
+  const airtables = require("../controllers/tutorial.controller.js");
 
   var router = require("express").Router();
 
-  // Create a new Tutorial
-  router.post("/", tutorials.create);
+  // Create a new airtables
+  router.post("/", airtables.create);
 
-  // Retrieve all Tutorials
-  router.get("/", tutorials.findAll);
+  // Retrieve all airtables
+  router.get("/", airtables.findAll);
 
-  router.get("/columns", tutorials.findColumns);
+  router.get("/columns", airtables.findColumns);
 
-  // Retrieve all published Tutorials
-  router.get("/published", tutorials.findAllPublished);
+  // Retrieve all published airtables
+  router.get("/published", airtables.findAllPublished);
 
   // Get Rows Length
-  router.get("/rowlen", tutorials.findRowLen);
+  router.get("/rowlen", airtables.findRowLen);
 
   // Insert left with col_id and name
-  router.post("/insertColumn", tutorials.insertColumn);
+  router.post("/insertColumn", airtables.insertColumn);
 
 
   // Retrieve a single Tutorial with id
-  router.get("/:id", tutorials.findOne);
+  router.get("/:id", airtables.findOne);
 
   // Delete a Tutorial with id
-  router.delete("/:id", tutorials.delete);
+  router.delete("/:id", airtables.delete);
 
-  // Delete all Tutorials
-  router.delete("/", tutorials.deleteAll);
+  // Delete all airtables
+  router.delete("/", airtables.deleteAll);
 
   app.use("/", router);
 };
