@@ -60,21 +60,21 @@ exports.findColumns = (req, res) => {
 };
 
 // Find a single Airtable by Id
-exports.findOne = (req, res) => {
-  Airtable.findById(req.params.id, (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        res.status(404).send({
-          message: `Not found Airtable with id ${req.params.id}.`,
-        });
-      } else {
-        res.status(500).send({
-          message: "Error retrieving Airtable with id " + req.params.id,
-        });
-      }
-    } else res.send(data);
-  });
-};
+// exports.findOne = (req, res) => {
+//   Airtable.findById(req.params.id, (err, data) => {
+//     if (err) {
+//       if (err.kind === "not_found") {
+//         res.status(404).send({
+//           message: `Not found Airtable with id ${req.params.id}.`,
+//         });
+//       } else {
+//         res.status(500).send({
+//           message: "Error retrieving Airtable with id " + req.params.id,
+//         });
+//       }
+//     } else res.send(data);
+//   });
+// };
 
 // find all published Airtable
 exports.findAllPublished = (req, res) => {

@@ -22,7 +22,7 @@ module.exports = (app) => {
 
 
   // Retrieve a single Tutorial with id
-  router.get("/:id", airtables.findOne);
+  // router.get("/:id", airtables.findOne);
 
   // Delete a Tutorial with id
   router.delete("/:id", airtables.delete);
