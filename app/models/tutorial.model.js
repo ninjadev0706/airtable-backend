@@ -36,22 +36,22 @@ Airtable.createdatas = (insertcontent, result) => {
   );
 };
 
-Airtable.findById = (id, result) => {
-  sql.query(`SELECT * FROM tutorials WHERE id = ${id}`, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(err, null);
-      return;
-    }
+// Airtable.findById = (id, result) => {
+//   sql.query(`SELECT * FROM tutorials WHERE id = ${id}`, (err, res) => {
+//     if (err) {
+//       console.log("error: ", err);
+//       result(err, null);
+//       return;
+//     }
 
-    if (res.length) {
-      result(null, res[0]);
-      return;
-    }
+//     if (res.length) {
+//       result(null, res[0]);
+//       return;
+//     }
 
-    result(false, true);
-  });
-};
+//     result(false, true);
+//   });
+// };
 
 // get all records
 Airtable.getAll = (title, result) => {
@@ -111,38 +111,38 @@ Airtable.rowLength = (title, result) => {
   });
 };
 
-Airtable.getAllPublished = (result) => {
-  sql.query("SELECT * FROM tutorials WHERE published=true", (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
+// Airtable.getAllPublished = (result) => {
+//   sql.query("SELECT * FROM tutorials WHERE published=true", (err, res) => {
+//     if (err) {
+//       console.log("error: ", err);
+//       result(null, err);
+//       return;
+//     }
 
-    result(null, res);
-  });
-};
+//     result(null, res);
+//   });
+// };
 
-Airtable.updateById = (id, tutorial, result) => {
-  sql.query(
-    "UPDATE tutorials SET title = ?, description = ?, published = ? WHERE id = ?",
-    [tutorial.title, tutorial.description, tutorial.published, id],
-    (err, res) => {
-      if (err) {
-        console.log("error: ", err);
-        result(null, err);
-        return;
-      }
+// Airtable.updateById = (id, tutorial, result) => {
+//   sql.query(
+//     "UPDATE tutorials SET title = ?, description = ?, published = ? WHERE id = ?",
+//     [tutorial.title, tutorial.description, tutorial.published, id],
+//     (err, res) => {
+//       if (err) {
+//         console.log("error: ", err);
+//         result(null, err);
+//         return;
+//       }
 
-      if (res.affectedRows == 0) {
-        result({ kind: "not_found" }, null);
-        return;
-      }
+//       if (res.affectedRows == 0) {
+//         result({ kind: "not_found" }, null);
+//         return;
+//       }
 
-      result(null, { id: id, ...tutorial });
-    }
-  );
-};
+//       result(null, { id: id, ...tutorial });
+//     }
+//   );
+// };
 
 // Increate id of columns bigger than chosen one
 Airtable.increaseId = (id, col_order, result) => {
@@ -181,33 +181,33 @@ Airtable.insertNewItem = (insertcontent, result) => {
   );
 };
 
-Airtable.remove = (id, result) => {
-  sql.query("DELETE FROM tutorials WHERE id = ?", id, (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
+// Airtable.remove = (id, result) => {
+//   sql.query("DELETE FROM tutorials WHERE id = ?", id, (err, res) => {
+//     if (err) {
+//       console.log("error: ", err);
+//       result(null, err);
+//       return;
+//     }
 
-    if (res.affectedRows == 0) {
-      result({ kind: "not_found" }, null);
-      return;
-    }
+//     if (res.affectedRows == 0) {
+//       result({ kind: "not_found" }, null);
+//       return;
+//     }
 
-    result(null, res);
-  });
-};
+//     result(null, res);
+//   });
+// };
 
-Airtable.removeAll = (result) => {
-  sql.query("DELETE FROM tutorials", (err, res) => {
-    if (err) {
-      console.log("error: ", err);
-      result(null, err);
-      return;
-    }
+// Airtable.removeAll = (result) => {
+//   sql.query("DELETE FROM tutorials", (err, res) => {
+//     if (err) {
+//       console.log("error: ", err);
+//       result(null, err);
+//       return;
+//     }
 
-    result(null, res);
-  });
-};
+//     result(null, res);
+//   });
+// };
 
 module.exports = Airtable;
